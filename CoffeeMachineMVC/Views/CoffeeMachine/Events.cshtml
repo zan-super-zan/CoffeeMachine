@@ -1,0 +1,32 @@
+﻿@using CoffeeMachineModel
+@model IList<MachineEventDto>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Coffee Machine Events";
+}
+
+<div class="card">
+    <h2>Events</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var evt in Model)
+            {
+                <tr>
+                    <td>@evt.Timestamp</td>
+                    <td>@evt.EventDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <a href="/CoffeeMachine/Index" class="btn btn-outline">Back</a>
+    </div>
+</div>

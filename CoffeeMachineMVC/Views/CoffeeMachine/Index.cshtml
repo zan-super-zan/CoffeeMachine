@@ -1,0 +1,61 @@
+﻿@using CoffeeMachineModel
+@model MachineStateDto
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Coffee Machine Dashboard";
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="card">
+    <h2>Coffee Machine Status</h2>
+    <p><strong>Coffee:</strong> @Model.CoffeeAmountGrams g</p>
+    <p><strong>Water:</strong> @Model.WaterAmountMl ml</p>
+    <p><strong>State:</strong> @(Model.IsPoweredOn ? "On" : "Off")</p>
+
+    <div class="button-row">
+        <form method="post" action="/CoffeeMachine/PowerOn">
+            <button type="submit" class="btn btn-green">Power On</button>
+        </form>
+        <form method="post" action="/CoffeeMachine/PowerOff">
+            <button type="submit" class="btn btn-yellow">Power Off</button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Brew Coffee</h2>
+    <form method="post" action="/CoffeeMachine/Brew" class="coffee-form">
+        <select name="type" class="select-box">
+            <option value="SINGLE">Single</option>
+            <option value="DOUBLE">Double</option>
+            <option value="SINGLE_LONG">Single Long</option>
+            <option value="DOUBLE_LONG">Double Long</option>
+        </select>
+        <button type="submit" class="btn btn-blue">Brew</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Add Resources</h2>
+    <form method="post" action="/CoffeeMachine/AddCoffee" class="resource-form">
+        <input type="number" name="amount" placeholder="Grams of coffee" required />
+        <button type="submit" class="btn btn-dark">Add Coffee</button>
+    </form>
+    <form method="post" action="/CoffeeMachine/AddWater" class="resource-form">
+        <input type="number" name="amount" placeholder="ml of water" required />
+        <button type="submit" class="btn btn-dark">Add Water</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Maintenance</h2>
+    <form method="post" action="/CoffeeMachine/Clean" class="maintenance-form">
+        <button type="submit" class="btn btn-outline">Clean Machine</button>
+    </form>
+</div>

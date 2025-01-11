@@ -1,0 +1,52 @@
+services:
+  db:
+    build:
+      context: ./Database
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: coffeemanager
+      POSTGRES_PASSWORD: coffeemanager
+      POSTGRES_DB: CoffeeMachineDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - coffeemachine-network
+
+
+  api:
+    build:
+      context: .
+      dockerfile: CoffeMachineAPI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DbConnection=Host=db;Port=5432;Database=CoffeeMachineDB;Username=coffeemanager;Password=coffeemanager
+    ports:
+      - "8001:8080"
+    depends_on:
+      - db
+    networks:
+      - coffeemachine-network
+
+
+  mvc:
+    build:
+      context: ./
+      dockerfile: CoffeeMachineMVC/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiBaseUrl=http://api:8080
+    ports:
+      - "8000:8080"
+    depends_on:
+      - api
+    networks:
+      - coffeemachine-network
+
+
+volumes:
+  db-data:
+
+networks:
+  coffeemachine-network:
